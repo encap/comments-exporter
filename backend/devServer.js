@@ -3,10 +3,9 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 
-const getComments = require('./getComments.js');
+const { getComments } = require('./getComments.js');
 require('dotenv').config({ path: `${__dirname}/./../.env.local` });
 
-debugger;
 app.get('/', getComments);
 
 app.use(express.static(__dirname));
