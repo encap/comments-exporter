@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "PORT=80 react-app-rewired start",
+    "start": "PORT=8080 react-app-rewired start",
     "build": "react-app-rewired build",
     "eject": "react-app-rewired eject",
     "server": "kill $(lsof -ti :3000) & nodemon -V -w backend/ -e js --inspect ./backend/devServer.js",
@@ -22,14 +22,16 @@
     ]
   },
   "dependencies": {
+    "dom-to-image": "^2.6.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "file-saver": "^2.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
-    "remove": "^0.1.5",
     "styled-components": "^5.2.1",
-    "stylelint-webpack-plugin": "^2.1.1"
+    "stylelint-webpack-plugin": "^2.1.1",
+    "uzip-module": "^1.0.2"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

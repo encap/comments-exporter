@@ -13,7 +13,9 @@ exports.getComments = (req, res) => {
           process.env.YOUTUBE_API_KEY
         }&part=id%2Csnippet&videoId=${videoID}&maxResults=${
           maxResults || 100
-        }&order=${order || 'relevance'}&searchTerms=${searchTerms}`,
+        }&order=${
+          order || 'relevance'
+        }&searchTerms=${searchTerms}&textFormat=plainText`,
         (resp) => {
           let data = '';
 
@@ -25,10 +27,18 @@ exports.getComments = (req, res) => {
             const parsedData = JSON.parse(data);
             console.log(`fetched page ${parsedData.items.length}`);
             comments = comments.concat(
-              parsedData.items.map((comment) => ({
-                id: comment.id,
-                text: comment.snippet.topLevelComment.snippet.textOriginal,
-              })),
+              parsedData.items.map((item) => {
+                const comm = item.snippet.topLevelComment.snippet;
+                return {
+                  id: item.id,
+                  replies: item.snippet.totalReplyCount,
+                  date: comm.publishedAt,
+                  text: comm.textOriginal,
+                  author: comm.authorDisplayName,
+                  img: comm.authorProfileImageUrl,
+                  likes: comm.likeCount,
+                };
+              }),
             );
 
             if (
