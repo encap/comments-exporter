@@ -1,23 +1,31 @@
-import './App.css';
+import styled from 'styled-components';
+import useFetchComments from './hooks/useFetchComments';
 
-function App() {
+const StyledLi = styled.li`
+  padding: 0.5em;
+  margin: 0.5em;
+`;
+
+const StyledP = styled.p`
+  font-size: 2em;
+`;
+
+const App = () => {
+  const comments = useFetchComments('uIyKS_9tP08', 'poster');
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {comments ? (
+        <ol>
+          {comments.map((comment) => (
+            <StyledLi key={comment.id}>{comment.text}</StyledLi>
+          ))}
+        </ol>
+      ) : (
+        <StyledP>Loading...</StyledP>
+      )}
     </div>
   );
-}
+};
 
 export default App;

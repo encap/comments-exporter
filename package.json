@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "PORT=80 react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "server": "node backend/devServer.js",
+    "start": "PORT=80 react-app-rewired start",
+    "build": "react-app-rewired build",
+    "eject": "react-app-rewired eject",
+    "server": "kill $(lsof -ti :3000) & nodemon -V -w backend/ -e js --inspect ./backend/devServer.js",
     "dev": "concurrently -r \"npm:start\" \"npm:server\""
   },
   "browserslist": {
@@ -27,7 +27,9 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
-    "remove": "^0.1.5"
+    "remove": "^0.1.5",
+    "styled-components": "^5.2.1",
+    "stylelint-webpack-plugin": "^2.1.1"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
@@ -39,6 +41,16 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^2.5.1",
-    "prettier": "^2.2.1"
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.7",
+    "postcss-sass": "^0.4.4",
+    "prettier": "^2.2.1",
+    "react-app-rewired": "^2.1.8",
+    "stylelint": "^13.9.0",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-sass-guidelines": "^7.1.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-processor-styled-components": "^1.10.0"
   }
 }

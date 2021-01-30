@@ -6,10 +6,14 @@ exports.getComments = (req, res) => {
   const { totalLimit, videoID, maxResults, order, searchTerms } = req.query;
   let comments = [];
 
-  const getPage = (pageToken) => {
+  const getPage = (pageToken = '') => {
     https
       .get(
-        `https://www.googleapis.com/youtube/v3/commentThreads?pageToken=${pageToken}&key=${process.env.YOUTUBE_API_KEY}&part=id%2Csnippet&videoId=${videoID}&maxResults=${maxResults}&order=${order}&searchTerms=${searchTerms}`,
+        `https://www.googleapis.com/youtube/v3/commentThreads?pageToken=${pageToken}&key=${
+          process.env.YOUTUBE_API_KEY
+        }&part=id%2Csnippet&videoId=${videoID}&maxResults=${
+          maxResults || 100
+        }&order=${order || 'relevance'}&searchTerms=${searchTerms}`,
         (resp) => {
           let data = '';
 
@@ -20,13 +24,20 @@ exports.getComments = (req, res) => {
           resp.on('end', () => {
             const parsedData = JSON.parse(data);
             console.log(`fetched page ${parsedData.items.length}`);
-            comments = comments.concat(parsedData.items);
-            // comments = parsed.items.map((comment) => comment.snippet.topLevelComment.snippet.textDisplay);
+            comments = comments.concat(
+              parsedData.items.map((comment) => ({
+                id: comment.id,
+                text: comment.snippet.topLevelComment.snippet.textOriginal,
+              })),
+            );
 
-            if (parsedData.nextPageToken && comments.length < totalLimit) {
+            if (
+              parsedData.nextPageToken &&
+              (!totalLimit || comments.length < totalLimit)
+            ) {
               getPage(parsedData.nextPageToken);
             } else {
-              console.log();
+              console.log('sending comments');
               res.json(comments);
             }
           });
