@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const useFetchComments = (videoID, searchTerms) => {
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const query = `?videoID=${videoID}&searchTerms=${searchTerms}`;
