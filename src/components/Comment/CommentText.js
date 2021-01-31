@@ -1,24 +1,27 @@
-import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import OptionsContext from '../../contexts/optionsContext';
+import StateContext from '../../context';
 
 const CommentText = ({ children: text }) => {
-  const { searchTerms, strictMode, highlight } = useContext(OptionsContext);
+  const { searchOptions, exportOptions } = useContext(StateContext).state;
   const [searchWords, setSearchWords] = useState();
 
   useEffect(() => {
-    if (highlight) {
-      if (strictMode) {
+    if (exportOptions.highlight) {
+      if (searchOptions.strictMode) {
         // @param: array<string>
-        setSearchWords([searchTerms]);
+        setSearchWords([searchOptions.searchTerms]);
       } else {
-        setSearchWords(searchTerms.split(' '));
+        setSearchWords(searchOptions.searchTerms.split(' '));
       }
     } else {
       setSearchWords([]);
     }
-  }, [searchTerms, strictMode, highlight]);
+  }, [
+    searchOptions.searchTerms,
+    searchOptions.strictMode,
+    exportOptions.highlight,
+  ]);
 
   return searchWords ? (
     <Highlighter
@@ -30,10 +33,6 @@ const CommentText = ({ children: text }) => {
       searchWords={searchWords}
     />
   ) : null;
-};
-
-CommentText.propTypes = {
-  children: PropTypes.string.isRequired,
 };
 
 export default CommentText;

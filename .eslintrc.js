@@ -1,3 +1,4 @@
+const DEV = process.env.NODE_ENV !== 'production';
 module.exports = {
   root: true,
   env: {
@@ -29,7 +30,8 @@ module.exports = {
       },
     ],
     'no-console': 0,
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-unused-vars': DEV ? [1, { varsIgnorePattern: 'set\\w+' }] : 2,
+    'no-debugger': DEV ? 0 : 2,
     'max-len': 0,
     'consistent-return': 0,
     'no-multiple-empty-lines': [2, { max: 2, maxEOF: 1 }],
@@ -38,7 +40,7 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'react/jsx-filename-extension': 0,
     'react/forbid-prop-types': 0,
-    // useState setter
-    'no-unused-vars': [2, { varsIgnorePattern: 'set\\w+' }],
+
+    'react/prop-types': [1, { ignore: ['children'] }],
   },
 };

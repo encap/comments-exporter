@@ -21,6 +21,9 @@ exports.getComments = (req, res) => {
 
   const getPage = (pageToken = '') => {
     delete params.totalLimit;
+
+    console.log(JSON.stringify(params, null, 2));
+
     const url = `https://www.googleapis.com/youtube/v3/commentThreads?${new URLSearchParams(
       { ...params, pageToken },
     ).toString()}`;

@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const useFetchComments = (videoId, searchTerms) => {
+const useFetchComments = () => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
+  const fetchComments = (params) => {
+    console.log('TEst');
     setIsLoading(true);
+    console.log(params);
     const query = {
       totalLimit: 100,
-      videoId,
-      searchTerms,
+      ...params,
     };
 
     const url = `${
@@ -21,8 +22,8 @@ const useFetchComments = (videoId, searchTerms) => {
       .then(async (res) => {
         if (res.ok) {
           const data = await res.json();
+          console.log('fetched', data);
 
-          console.log(data);
           setComments(data);
           setIsLoading(false);
           setIsError(false);
@@ -36,9 +37,9 @@ const useFetchComments = (videoId, searchTerms) => {
         setIsError(true);
         console.error(err);
       });
-  }, []);
+  };
 
-  return [comments, isLoading, isError];
+  return [fetchComments, comments, isLoading, isError];
 };
 
 export default useFetchComments;
