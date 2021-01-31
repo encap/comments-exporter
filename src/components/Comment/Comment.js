@@ -23,6 +23,7 @@ const Comment = ({ comm, index, forwardRef }) => {
     const commentEl = ref.current.querySelector('.comment');
     exportOne(commentEl, `test-screenshot-${index + 1}`);
   };
+
   return (
     <li ref={forwardRef}>
       <StyledComment className="comment">

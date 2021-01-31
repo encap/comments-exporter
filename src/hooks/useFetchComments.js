@@ -4,8 +4,14 @@ const useFetchComments = (videoID, searchTerms) => {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    const query = `?videoID=${videoID}&searchTerms=${searchTerms}`;
-    fetch((process.env.REACT_APP_API_URL || 'http://localhost:3000') + query)
+    const query = {
+      videoID,
+      searchTerms,
+    };
+    const url = `${
+      process.env.REACT_APP_API_URL || 'http://localhost:3000'
+    }?${new URLSearchParams(query)}`;
+    fetch(url)
       .then(async (resp) => {
         const data = await resp.json();
 

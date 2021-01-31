@@ -23,7 +23,8 @@ const CommentText = ({ children: text }) => {
     <Highlighter
       textToHighlight={text}
       highlightStyle={{
-        background: 'yellow',
+        background: '#ff3',
+        padding: '0 0.2em',
       }}
       searchWords={searchWords}
     />
