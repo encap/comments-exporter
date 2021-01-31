@@ -8,7 +8,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Comments Screenshooter</h1>
+      <h1>Search and export comments as PNG</h1>
       <StateContextProvider>
         <UserInputs fetchComments={fetchComments} />
         <CommentsList
