@@ -14,6 +14,7 @@ module.exports = {
     }
 
     config.output.path = `${__dirname}/docs`;
+    config.output.publicPath = '/comments-exporter'
 
     return config;
   },
