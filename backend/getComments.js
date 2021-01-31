@@ -3,76 +3,84 @@
 const https = require('https');
 
 exports.getComments = (req, res) => {
-  const { totalLimit, maxResults } = req.query;
-  const params = {
-    ...req.query,
-    maxResults: maxResults > totalLimit ? totalLimit : maxResults || 100,
-    key: process.env.YOUTUBE_API_KEY,
-    textFormat: 'plainText',
-    part: 'snippet',
-  };
+  res.set('Access-Control-Allow-Origin', '*');
 
-  let comments = [];
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    res.status(204).send('');
+  } else {
+    const { totalLimit, maxResults } = req.query;
+    const params = {
+      ...req.query,
+      maxResults: maxResults > totalLimit ? totalLimit : maxResults || 100,
+      key: process.env.YOUTUBE_API_KEY,
+      textFormat: 'plainText',
+      part: 'snippet',
+    };
 
-  const endWithError = (err, statusCode = 500) => {
-    console.error(err);
-    res.sendStatus(statusCode);
-  };
+    let comments = [];
 
-  const getPage = (pageToken = '') => {
-    delete params.totalLimit;
+    const endWithError = (err, statusCode = 500) => {
+      console.error(err);
+      res.sendStatus(statusCode);
+    };
 
-    console.log(JSON.stringify(params, null, 2));
+    const getPage = (pageToken = '') => {
+      delete params.totalLimit;
 
-    const url = `https://www.googleapis.com/youtube/v3/commentThreads?${new URLSearchParams(
-      { ...params, pageToken },
-    ).toString()}`;
+      console.log(JSON.stringify(params, null, 2));
 
-    https
-      .get(url, (resp) => {
-        if (resp.statusCode === 200) {
-          let data = '';
+      const url = `https://www.googleapis.com/youtube/v3/commentThreads?${new URLSearchParams(
+        { ...params, pageToken },
+      ).toString()}`;
 
-          resp.on('data', (chunk) => {
-            data += chunk;
-          });
+      https
+        .get(url, (resp) => {
+          if (resp.statusCode === 200) {
+            let data = '';
 
-          resp.on('end', () => {
-            const parsedData = JSON.parse(data);
-            console.log(`fetched page ${parsedData.items.length}`);
-            comments = comments.concat(
-              parsedData.items.map((item) => {
-                const comm = item.snippet.topLevelComment.snippet;
-                return {
-                  id: item.id,
-                  replies: item.snippet.totalReplyCount,
-                  date: comm.publishedAt,
-                  text: comm.textOriginal,
-                  author: comm.authorDisplayName,
-                  img: comm.authorProfileImageUrl,
-                  likes: comm.likeCount,
-                };
-              }),
-            );
+            resp.on('data', (chunk) => {
+              data += chunk;
+            });
 
-            if (
-              parsedData.nextPageToken &&
-              (!totalLimit || comments.length < totalLimit)
-            ) {
-              getPage(parsedData.nextPageToken);
-            } else {
-              console.log('sending comments');
-              res.json(comments.slice(0, totalLimit));
-            }
-          });
-        } else {
-          endWithError(new Error('Youtube API not 200'), resp.statusCode);
-        }
-      })
-      .on('error', (err) => {
-        endWithError(err);
-      });
-  };
+            resp.on('end', () => {
+              const parsedData = JSON.parse(data);
+              console.log(`fetched page ${parsedData.items.length}`);
+              comments = comments.concat(
+                parsedData.items.map((item) => {
+                  const comm = item.snippet.topLevelComment.snippet;
+                  return {
+                    id: item.id,
+                    replies: item.snippet.totalReplyCount,
+                    date: comm.publishedAt,
+                    text: comm.textOriginal,
+                    author: comm.authorDisplayName,
+                    img: comm.authorProfileImageUrl,
+                    likes: comm.likeCount,
+                  };
+                }),
+              );
 
-  getPage();
+              if (
+                parsedData.nextPageToken &&
+                (!totalLimit || comments.length < totalLimit)
+              ) {
+                getPage(parsedData.nextPageToken);
+              } else {
+                console.log('sending comments');
+                res.json(comments.slice(0, totalLimit));
+              }
+            });
+          } else {
+            endWithError(new Error('Youtube API not 200'), resp.statusCode);
+          }
+        })
+        .on('error', (err) => {
+          endWithError(err);
+        });
+    };
+    getPage();
+  }
 };
