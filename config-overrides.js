@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const StylelintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {

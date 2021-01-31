@@ -38,6 +38,7 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'react/jsx-filename-extension': 0,
     'react/forbid-prop-types': 0,
+    // useState setter
     'no-unused-vars': [2, { varsIgnorePattern: 'set\\w+' }],
   },
 };
