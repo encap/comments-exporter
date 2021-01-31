@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const StylelintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
@@ -11,6 +12,8 @@ module.exports = {
         // }
       );
     }
+
+    config.output.path = `${__dirname}/docs`;
 
     return config;
   },

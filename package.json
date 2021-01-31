@@ -1,7 +1,8 @@
 {
-  "name": "comments-screenshoter",
+  "name": "comments-exporter",
   "version": "0.1.0",
   "private": true,
+  "engines": { "node": ">=14.0.0"},
   "scripts": {
     "start": "PORT=8080 react-app-rewired start",
     "build": "react-app-rewired build",
