@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { or, explicitNull } from 'airbnb-prop-types';
 
 import { Button } from '../styled';
 
@@ -11,7 +12,7 @@ const SearchBtn = ({ onClick }) => {
 };
 
 SearchBtn.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: or([explicitNull(), PropTypes.function]).isRequired,
 };
 
 export default SearchBtn;

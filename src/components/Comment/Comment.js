@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+
 import React from 'react';
 import exportOne from '../../helpers/exportOne';
 import CommentText from './CommentText';

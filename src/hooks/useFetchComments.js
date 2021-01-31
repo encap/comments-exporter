@@ -2,11 +2,10 @@ import { useState } from 'react';
 
 const useFetchComments = () => {
   const [comments, setComments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(null);
+  const [isError, setIsError] = useState(null);
 
   const fetchComments = (params) => {
-    console.log('TEst');
     setIsLoading(true);
     console.log(params);
     const query = {

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { or, explicitNull } from 'airbnb-prop-types';
 import Comment from '../Comment/Comment';
 import LoadingMsg from './LoadingMsg';
 import CommentsNotFound from './CommentsNotFound';
@@ -17,7 +18,7 @@ const CommentsList = ({ comments, isLoading, isError }) => {
     generateScreenshots,
   ] = useGeneratedScreenshots(commentsRefs);
 
-  if (isLoading) {
+  if (isLoading === true) {
     return <LoadingMsg />;
   }
   if (isError) {
@@ -51,8 +52,8 @@ const CommentsList = ({ comments, isLoading, isError }) => {
 
 CommentsList.propTypes = {
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  isError: PropTypes.bool.isRequired,
+  isLoading: or([explicitNull(), PropTypes.bool]).isRequired,
+  isError: or([explicitNull(), PropTypes.bool]).isRequired,
 };
 
 export default CommentsList;
