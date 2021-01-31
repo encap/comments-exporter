@@ -22,6 +22,8 @@ const App = () => {
     highlight,
   });
 
+  const [isGeneratingScreenshots, setIsGeneratingScreenshots] = useState(false);
+
   const [comments, isLoading, isError] = useFetchComments(videoID, searchTerms);
   const [filteredComments, setFilteredComments] = useState(comments);
   const commentsRefs = useRefsArray(filteredComments);
@@ -39,15 +41,27 @@ const App = () => {
   }, [comments, strictMode, searchTerms]);
 
   const save = () => {
-    exportZipped(commentsRefs, {
-      zipName: `${searchTerms}-${videoID}-screenshots`,
-    });
+    console.warn('start');
+    setIsGeneratingScreenshots(true);
   };
+
+  useEffect(async () => {
+    // WARN: Compute intensive function
+    // execute in useEffect (after render to prevent UI blocking)
+    if (isGeneratingScreenshots) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await exportZipped(commentsRefs, {
+        zipName: `${searchTerms}-${videoID}-screenshots`,
+      });
+      console.warn('end');
+      setIsGeneratingScreenshots(false);
+    }
+  }, [isGeneratingScreenshots]);
 
   return (
     <div className="App">
       <StyledBtn type="button" onClick={save}>
-        Save
+        {isGeneratingScreenshots ? 'Generating...' : 'Save'}
       </StyledBtn>
       <OptionsProvider value={options}>
         <CommentsList
