@@ -12,7 +12,7 @@ const StyledBtn = styled.button`
 
 const App = () => {
   const [videoID, setvideoID] = useState('KgqJJECQQH0');
-  const [searchTerms, setSearchTerms] = useState('nice video');
+  const [searchTerms, setSearchTerms] = useState('a');
   const [strictMode, setStrict] = useState(true);
   const [highlight, setHighlight] = useState(true);
 
@@ -22,12 +22,12 @@ const App = () => {
     highlight,
   });
 
-  const comments = useFetchComments(videoID, searchTerms);
+  const [comments, isLoading, isError] = useFetchComments(videoID, searchTerms);
   const [filteredComments, setFilteredComments] = useState(comments);
   const commentsRefs = useRefsArray(filteredComments);
 
   useEffect(() => {
-    if (strictMode) {
+    if (strictMode && comments) {
       setFilteredComments(
         comments.filter(({ text }) =>
           text.toLowerCase().includes(searchTerms.toLowerCase()),
@@ -50,7 +50,12 @@ const App = () => {
         Save
       </StyledBtn>
       <OptionsProvider value={options}>
-        <CommentsList comments={filteredComments} commentsRefs={commentsRefs} />
+        <CommentsList
+          comments={filteredComments}
+          commentsRefs={commentsRefs}
+          isLoading={isLoading}
+          isError={isError}
+        />
       </OptionsProvider>
     </div>
   );

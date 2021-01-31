@@ -6,6 +6,11 @@ exports.getComments = (req, res) => {
   const { totalLimit, videoID, maxResults, order, searchTerms } = req.query;
   let comments = [];
 
+  const endWithError = (err, statusCode = 500) => {
+    console.error(err);
+    res.sendStatus(statusCode);
+  };
+
   const getPage = (pageToken = '') => {
     https
       .get(
@@ -17,45 +22,48 @@ exports.getComments = (req, res) => {
           order || 'relevance'
         }&searchTerms=${searchTerms}&textFormat=plainText`,
         (resp) => {
-          let data = '';
+          if (resp.statusCode === 200) {
+            let data = '';
 
-          resp.on('data', (chunk) => {
-            data += chunk;
-          });
+            resp.on('data', (chunk) => {
+              data += chunk;
+            });
 
-          resp.on('end', () => {
-            const parsedData = JSON.parse(data);
-            console.log(`fetched page ${parsedData.items.length}`);
-            comments = comments.concat(
-              parsedData.items.map((item) => {
-                const comm = item.snippet.topLevelComment.snippet;
-                return {
-                  id: item.id,
-                  replies: item.snippet.totalReplyCount,
-                  date: comm.publishedAt,
-                  text: comm.textOriginal,
-                  author: comm.authorDisplayName,
-                  img: comm.authorProfileImageUrl,
-                  likes: comm.likeCount,
-                };
-              }),
-            );
+            resp.on('end', () => {
+              const parsedData = JSON.parse(data);
+              console.log(`fetched page ${parsedData.items.length}`);
+              comments = comments.concat(
+                parsedData.items.map((item) => {
+                  const comm = item.snippet.topLevelComment.snippet;
+                  return {
+                    id: item.id,
+                    replies: item.snippet.totalReplyCount,
+                    date: comm.publishedAt,
+                    text: comm.textOriginal,
+                    author: comm.authorDisplayName,
+                    img: comm.authorProfileImageUrl,
+                    likes: comm.likeCount,
+                  };
+                }),
+              );
 
-            if (
-              parsedData.nextPageToken &&
-              (!totalLimit || comments.length < totalLimit)
-            ) {
-              getPage(parsedData.nextPageToken);
-            } else {
-              console.log('sending comments');
-              res.json(comments);
-            }
-          });
+              if (
+                parsedData.nextPageToken &&
+                (!totalLimit || comments.length < totalLimit)
+              ) {
+                getPage(parsedData.nextPageToken);
+              } else {
+                console.log('sending comments');
+                res.json(comments);
+              }
+            });
+          } else {
+            endWithError(new Error('Youtube API not 200'), resp.statusCode);
+          }
         },
       )
       .on('error', (err) => {
-        console.log(`Error: ${err.message}`);
-        res.sendStatus(500);
+        endWithError(err);
       });
   };
 

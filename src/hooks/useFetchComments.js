@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 
 const useFetchComments = (videoID, searchTerms) => {
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const query = {
       videoID,
       searchTerms,
@@ -12,18 +15,27 @@ const useFetchComments = (videoID, searchTerms) => {
       process.env.REACT_APP_API_URL || 'http://localhost:3000'
     }?${new URLSearchParams(query)}`;
     fetch(url)
-      .then(async (resp) => {
-        const data = await resp.json();
+      .then(async (res) => {
+        if (res.ok) {
+          const data = await res.json();
 
-        console.log(data);
-        setComments(data);
+          console.log(data);
+          setComments(data);
+          setIsLoading(false);
+          setIsError(false);
+        } else {
+          console.warn(res.status);
+          throw Error('Response not ok');
+        }
       })
       .catch((err) => {
+        setIsLoading(false);
+        setIsError(true);
         console.error(err);
       });
   }, []);
 
-  return comments;
+  return [comments, isLoading, isError];
 };
 
 export default useFetchComments;
