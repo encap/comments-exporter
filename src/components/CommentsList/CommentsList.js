@@ -21,6 +21,9 @@ const CommentsList = ({ comments, isLoading, isError }) => {
   if (isLoading === true) {
     return <LoadingMsg />;
   }
+  if (isLoading === null) {
+    return null;
+  }
   if (isError) {
     return <FetchError />;
   }
@@ -37,7 +40,7 @@ const CommentsList = ({ comments, isLoading, isError }) => {
         {isGeneratingScreenshots ? 'Generating...' : 'Save'}
       </Button>
       <ol>
-        {comments.map((comm, index) => (
+        {filteredComments.map((comm, index) => (
           <Comment
             forwardRef={commentsRefs[index]}
             key={comm.id}

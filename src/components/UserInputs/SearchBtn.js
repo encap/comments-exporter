@@ -12,7 +12,7 @@ const SearchBtn = ({ onClick }) => {
 };
 
 SearchBtn.propTypes = {
-  onClick: or([explicitNull(), PropTypes.function]).isRequired,
+  onClick: or([explicitNull(), PropTypes.func]).isRequired,
 };
 
 export default SearchBtn;
