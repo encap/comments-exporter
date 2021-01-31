@@ -12,9 +12,11 @@ const useFetchComments = (videoId, searchTerms) => {
       videoId,
       searchTerms,
     };
+
     const url = `${
       process.env.REACT_APP_API_URL || 'http://localhost:3000'
     }?${new URLSearchParams(query)}`;
+
     fetch(url)
       .then(async (res) => {
         if (res.ok) {

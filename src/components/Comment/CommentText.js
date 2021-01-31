@@ -10,6 +10,7 @@ const CommentText = ({ children: text }) => {
   useEffect(() => {
     if (highlight) {
       if (strictMode) {
+        // @param: array<string>
         setSearchWords([searchTerms]);
       } else {
         setSearchWords(searchTerms.split(' '));

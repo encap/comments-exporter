@@ -12,10 +12,13 @@ const StyledBtn = styled.button`
 
 const App = () => {
   const [videoId, setvideoId] = useState('KgqJJECQQH0');
+  // searchTerms - string; space separated; comment must include all terms, but they don't have to be consecutive
   const [searchTerms, setSearchTerms] = useState('a');
+  // strictMode sets client-side filtering; matches whole searchTerm case insesitive
   const [strictMode, setStrict] = useState(true);
   const [highlight, setHighlight] = useState(true);
 
+  // group for context
   const [options] = useState({
     searchTerms,
     strictMode,
@@ -41,19 +44,17 @@ const App = () => {
   }, [comments, strictMode, searchTerms]);
 
   const save = () => {
-    console.warn('start');
     setIsGeneratingScreenshots(true);
+    // WARN: Compute intensive function (10ms/comment)
+    // execute in the following useEffect (after render to prevent UI blocking)
   };
 
   useEffect(async () => {
-    // WARN: Compute intensive function
-    // execute in useEffect (after render to prevent UI blocking)
     if (isGeneratingScreenshots) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await exportZipped(commentsRefs, {
         zipName: `${searchTerms}-${videoId}-screenshots`,
       });
-      console.warn('end');
       setIsGeneratingScreenshots(false);
     }
   }, [isGeneratingScreenshots]);

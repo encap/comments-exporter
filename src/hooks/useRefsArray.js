@@ -5,6 +5,7 @@ const useRefsArray = (array) => {
 
   useEffect(() => {
     if (array) {
+      // use .fill(N).map(...) because .fill uses references of the same object
       setRefsArray(
         Array(array.length)
           .fill(0)

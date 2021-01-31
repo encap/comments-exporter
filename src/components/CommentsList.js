@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Comment from './Comment/Comment';
 import LoadingMsg from './LoadingMsg';
+import CommentsNotFound from './CommentsNotFound';
 import FetchError from './FetchError';
 
 const CommentsList = ({ comments, commentsRefs, isLoading, isError }) => {
@@ -12,12 +13,14 @@ const CommentsList = ({ comments, commentsRefs, isLoading, isError }) => {
   }
 
   if (comments.length === 0) {
-    return <p>No comments found</p>;
+    return <CommentsNotFound />;
   }
 
   return (
     <div>
-      <h3>Found {comments.length} comments</h3>
+      <h3>
+        Found {comments.length} comment{comments.length === 1 ? '' : 's'}
+      </h3>
       <ol>
         {comments.map((comm, index) => (
           <Comment

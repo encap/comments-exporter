@@ -20,8 +20,8 @@ const StyledSaveBtn = styled.button`
 
 const Comment = ({ comm, index, forwardRef }) => {
   const save = (ref) => {
-    const commentEl = ref.current.querySelector('.comment');
-    exportOne(commentEl, `test-screenshot-${index + 1}`);
+    const commentNode = ref.current.querySelector('.comment');
+    exportOne(commentNode, `test-screenshot-${index + 1}`);
   };
 
   return (
