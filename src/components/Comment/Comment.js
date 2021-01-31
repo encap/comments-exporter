@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import exportOne from '../helpers/exportOne';
+import exportOne from '../../helpers/exportOne';
 import CommentText from './CommentText';
 
 const StyledComment = styled.div`
@@ -29,7 +29,9 @@ const Comment = ({ comm, index, forwardRef }) => {
         <img src={comm.img} alt="profile" />
         <b> {comm.author}</b>
         <i> {comm.date}</i>
-        <CommentText>{comm.text}</CommentText>
+        <p>
+          <CommentText>{comm.text}</CommentText>
+        </p>
         <h3>
           L: {comm.likes} R: {comm.replies}
         </h3>

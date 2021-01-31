@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import Comment from './Comment';
+import Comment from './Comment/Comment';
 import LoadingMsg from './LoadingMsg';
 
 const CommentsList = ({ comments, commentsRefs }) => {
