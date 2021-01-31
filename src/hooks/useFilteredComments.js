@@ -7,7 +7,7 @@ const useFilteredComments = (comments) => {
   const { searchOptions } = useContext(StateContext).state;
 
   useEffect(() => {
-    if (searchOptions.strictMode && comments.length) {
+    if (searchOptions.verbatimMode && comments.length) {
       setFilteredComments(
         comments.filter(({ text }) => {
           return (
@@ -19,7 +19,7 @@ const useFilteredComments = (comments) => {
     } else {
       setFilteredComments(comments);
     }
-  }, [comments, searchOptions.strictMode, searchOptions.searchTerms]);
+  }, [comments, searchOptions.verbatimMode, searchOptions.searchTerms]);
 
   return filteredComments;
 };

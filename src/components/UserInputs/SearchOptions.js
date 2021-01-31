@@ -9,7 +9,7 @@ import { Button } from '../styled';
 // comment must include all terms,
 // but they don't have to be consecutive nor in order
 //
-// strictMode - bool; sets client-side filtering
+// verbatimMode - bool; sets client-side filtering
 // matches whole searchTerm case insesitive
 
 const FlexForm = styled.form`
@@ -40,10 +40,10 @@ const SearchOptions = ({ fetchComments }) => {
       <FlexForm onSubmit={handleSubmit(onSubmit)}>
         <input name="videoId" ref={register} placeholder="videoID" />
         <input name="searchTerms" ref={register} placeholder="Search" />
-        <label htmlFor="strictMode">
+        <label htmlFor="verbatimMode">
           <input
-            name="strictMode"
-            id="strictMode"
+            name="verbatimMode"
+            id="verbatimMode"
             type="checkbox"
             ref={register}
           />

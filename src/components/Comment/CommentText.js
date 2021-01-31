@@ -8,7 +8,7 @@ const CommentText = ({ children: text }) => {
 
   useEffect(() => {
     if (exportOptions.highlight) {
-      if (searchOptions.strictMode) {
+      if (searchOptions.verbatimMode) {
         // @param: array<string>
         setSearchWords([searchOptions.searchTerms]);
       } else {
@@ -19,7 +19,7 @@ const CommentText = ({ children: text }) => {
     }
   }, [
     searchOptions.searchTerms,
-    searchOptions.strictMode,
+    searchOptions.verbatimMode,
     exportOptions.highlight,
   ]);
 

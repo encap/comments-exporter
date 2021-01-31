@@ -4,7 +4,7 @@ const initialState = {
   searchOptions: {
     videoId: 'KgqJJECQQH0',
     searchTerms: 'nice video',
-    strictMode: true,
+    verbatimMode: true,
   },
   exportOptions: {
     highlight: true,
