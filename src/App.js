@@ -11,7 +11,7 @@ const StyledBtn = styled.button`
 `;
 
 const App = () => {
-  const [videoID, setvideoID] = useState('KgqJJECQQH0');
+  const [videoId, setvideoId] = useState('KgqJJECQQH0');
   const [searchTerms, setSearchTerms] = useState('a');
   const [strictMode, setStrict] = useState(true);
   const [highlight, setHighlight] = useState(true);
@@ -24,7 +24,7 @@ const App = () => {
 
   const [isGeneratingScreenshots, setIsGeneratingScreenshots] = useState(false);
 
-  const [comments, isLoading, isError] = useFetchComments(videoID, searchTerms);
+  const [comments, isLoading, isError] = useFetchComments(videoId, searchTerms);
   const [filteredComments, setFilteredComments] = useState(comments);
   const commentsRefs = useRefsArray(filteredComments);
 
@@ -51,7 +51,7 @@ const App = () => {
     if (isGeneratingScreenshots) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await exportZipped(commentsRefs, {
-        zipName: `${searchTerms}-${videoID}-screenshots`,
+        zipName: `${searchTerms}-${videoId}-screenshots`,
       });
       console.warn('end');
       setIsGeneratingScreenshots(false);

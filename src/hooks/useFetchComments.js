@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useFetchComments = (videoID, searchTerms) => {
+const useFetchComments = (videoId, searchTerms) => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -8,7 +8,8 @@ const useFetchComments = (videoID, searchTerms) => {
   useEffect(() => {
     setIsLoading(true);
     const query = {
-      videoID,
+      totalLimit: 100,
+      videoId,
       searchTerms,
     };
     const url = `${
